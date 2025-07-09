@@ -23,6 +23,8 @@ class WatchList extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             CategorySelector(),
+            const SizedBox(height: 5),
+
             Expanded(child: CoinList()),
             Menu(),
           ],

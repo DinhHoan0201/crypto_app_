@@ -34,7 +34,7 @@ class _CategorySelectorState extends State<CategorySelector> {
                   child: Text(
                     categories[index],
                     style: TextStyle(
-                      color: Colors.black87,
+                      color: isSelected ? Colors.white : Colors.black87,
                       fontWeight:
                           isSelected ? FontWeight.bold : FontWeight.normal,
                     ),

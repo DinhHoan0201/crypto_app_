@@ -26,11 +26,12 @@ class _MenuState extends State<Menu> {
               },
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: isSelected ? Colors.yellow : Colors.transparent,
-              borderRadius: BorderRadius.circular(20),
+
+            child: Icon(
+              menuIcons[index],
+              color: isSelected ? Colors.yellow[300] : Colors.grey[300],
+              size: 30,
             ),
-            child: Icon(menuIcons[index]),
           ),
         );
       }),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:crypto_app/model/coinlist_model.dart';
 import 'package:crypto_app/service/fetch_API.dart';
+import 'package:crypto_app/widgets/chart.dart';
 
 class CoinList extends StatefulWidget {
   @override
@@ -9,14 +10,13 @@ class CoinList extends StatefulWidget {
 
 class _CoinListState extends State<CoinList> {
   List<CoinListModel> coinList = [];
-
   @override
   void initState() {
     super.initState();
-    fetchCoinList();
+    _fetchCryptoData();
   }
 
-  Future<void> fetchCoinList() async {
+  Future<void> _fetchCryptoData() async {
     try {
       final data = await fetchCryptoData();
       setState(() {
@@ -36,10 +36,61 @@ class _CoinListState extends State<CoinList> {
       itemCount: coinList.length,
       itemBuilder: (context, index) {
         final coin = coinList[index];
-        return ListTile(
-          title: Text(coin.name),
-          subtitle: Text(coin.symbol.toUpperCase()),
-          trailing: Text('\$${coin.currentPrice.toStringAsFixed(2)}'),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          child: Container(
+            height: 70,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  blurRadius: 30,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
+
+            child: Row(
+              children: [
+                CircleAvatar(backgroundImage: NetworkImage(coin.imageUrl)),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    coin.name,
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Chart(coinId: coin.id),
+                const SizedBox(width: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '\$${coin.currentPrice.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    if (coin.priceChangePercentage24h != null)
+                      Text(
+                        '${coin.priceChangePercentage24h}%',
+                        style: TextStyle(
+                          color:
+                              double.tryParse(coin.priceChangePercentage24h!)! <
+                                      0
+                                  ? Colors.red
+                                  : Colors.green,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         );
       },
     );
