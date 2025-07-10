@@ -4,11 +4,14 @@ class SearchFilter extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final IconData settingsIcon;
+  final Function(String) onChanged;
+
   const SearchFilter({
     Key? key,
     required this.hintText,
     required this.icon,
     required this.settingsIcon,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -26,6 +29,8 @@ class SearchFilter extends StatelessWidget {
               ),
 
               child: TextField(
+                onChanged: onChanged,
+                style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     icon,

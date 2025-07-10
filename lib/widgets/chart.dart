@@ -13,30 +13,28 @@ class Chart extends StatefulWidget {
   _ChartState createState() => _ChartState();
 }
 
-class _ChartState extends State<Chart> {
+class _ChartState extends State<Chart> with AutomaticKeepAliveClientMixin {
   List<double> prices = [];
   bool isLoading = true;
-  Timer? _timer;
+  late Timer _timer;
 
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     super.initState();
     _fetchChartData();
-    _timer = Timer.periodic(const Duration(minutes: 3), (timer) {
-      _fetchChartData();
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
+    _timer = Timer.periodic(
+      const Duration(minutes: 3),
+      (_) => _fetchChartData(),
+    );
   }
 
   Future<void> _fetchChartData() async {
     try {
       final priceList = await fetchCryptoChartdata(widget.coinId, widget.days);
-      if (!listEquals(prices, priceList)) {
+      print('Fetching data for ${widget.coinId}');
+      if (mounted && !listEquals(prices, priceList)) {
         setState(() {
           prices = priceList;
           isLoading = false;
@@ -44,13 +42,22 @@ class _ChartState extends State<Chart> {
       }
     } catch (e) {
       print('Error fetching chart data: $e');
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
+    super.build(context);
     if (prices.isEmpty) {
       return SizedBox(
         width: 60,

@@ -1,33 +1,34 @@
 import 'package:flutter/material.dart';
 
-class MyHeader extends StatelessWidget {
-  const MyHeader({super.key});
+class MyHeader extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  const MyHeader({super.key, required this.title});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, // giãn cách 2 đầu
-        children: [
-          Icon(Icons.menu, color: Colors.black),
-          Expanded(
-            child: Center(
-              child: Text(
-                'WachList Crypto',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-
-          // Placeholder cho icon bên phải (có thể là Avatar, Noti, etc)
-          SizedBox(
-            width: 24, // giữ khoảng cân bằng với icon bên trái
-          ),
-        ],
+      backgroundColor: Colors.white,
+      elevation: 1,
+      leading: IconButton(
+        icon: const Icon(Icons.menu, color: Colors.black),
+        onPressed: () {}, // có thể mở menu ở đây
       ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      centerTitle: true,
+      actions: const [
+        SizedBox(width: 48), // khoảng cách giữ cân bằng với leading
+      ],
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

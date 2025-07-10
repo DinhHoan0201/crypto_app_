@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:crypto_app/screen/watch_list.dart';
+import 'package:crypto_app/screen/main_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:crypto_app/widgets/chart.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: const WatchList(),
+      home: const MainScreen(),
     );
   }
 }
