@@ -7,9 +7,9 @@ class Menu extends StatelessWidget {
 
   final List<IconData> menuIcons = [
     Icons.home,
-    Icons.trending_up,
-    Icons.notifications,
     Icons.account_circle,
+    Icons.trending_up,
+    Icons.compare_arrows,
   ];
 
   Widget build(BuildContext context) {

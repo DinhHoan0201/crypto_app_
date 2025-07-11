@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:crypto_app/model/coinlist_model.dart';
-import 'package:crypto_app/service/fetch_API.dart';
 import 'package:crypto_app/widgets/chart.dart';
+import 'package:crypto_app/screen/trade.dart';
 
 class CoinList extends StatelessWidget {
   final List<CoinListModel> coins;
@@ -27,45 +27,60 @@ class CoinList extends StatelessWidget {
                 ),
               ],
             ),
-
-            child: Row(
-              children: [
-                CircleAvatar(backgroundImage: NetworkImage(coin.imageUrl)),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    coin.name,
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Chart(coinId: coin.id),
-                const SizedBox(width: 12),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Trade(coin: coin)),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsetsGeometry.symmetric(horizontal: 15),
+                child: Row(
                   children: [
-                    Text(
-                      '\$${coin.currentPrice.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    if (coin.priceChangePercentage24h != null)
-                      Text(
-                        '${coin.priceChangePercentage24h}%',
+                    CircleAvatar(backgroundImage: NetworkImage(coin.imageUrl)),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        coin.name,
                         style: TextStyle(
-                          color:
-                              double.tryParse(coin.priceChangePercentage24h!)! <
-                                      0
-                                  ? Colors.red
-                                  : Colors.green,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
+                    ),
+                    Chart(coinId: coin.id),
+                    const SizedBox(width: 12),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '\$${coin.currentPrice.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                        if (coin.priceChangePercentage24h != null)
+                          Text(
+                            '${coin.priceChangePercentage24h}%',
+                            style: TextStyle(
+                              color:
+                                  double.tryParse(
+                                            coin.priceChangePercentage24h!,
+                                          )! <
+                                          0
+                                      ? Colors.red
+                                      : Colors.green,
+                            ),
+                          ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
         );

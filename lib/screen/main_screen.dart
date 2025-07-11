@@ -14,14 +14,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreen extends State<MainScreen> {
-  int selectedIndex = 0;
-  final List<String> titles = ['Home', 'Trade', 'Notifications', 'Profile'];
-  final List<Widget> screens = [HomePage(), Follow(), Trade(), Account()];
+  int selectedIndex = 2;
+  final List<String> titles = ['Home', 'Profile', 'Watch List', 'Trade'];
+  final List<Widget> screens = [HomePage(), Account(), Follow()]; //, Trade()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyHeader(title: titles[selectedIndex]),
-      body: SafeArea(child: Follow()), //screens[selectedIndex]
+      body: SafeArea(child: screens[selectedIndex]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 8.0),
         child: Menu(

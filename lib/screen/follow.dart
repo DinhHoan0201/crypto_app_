@@ -16,7 +16,8 @@ class _Follow extends State<Follow> {
   List<CoinListModel> filteredCoins = [];
   Timer? _debounce;
   bool isLoading = true;
-
+  int selectedIndex = 0;
+  String error = '';
   @override
   void initState() {
     super.initState();
@@ -25,7 +26,7 @@ class _Follow extends State<Follow> {
 
   Future<void> _fetchCryptoData() async {
     try {
-      fetchCryptoData().then((data) {
+      fetchCryptoData(2, 1).then((data) {
         final coins = data.map((json) => CoinListModel.fromJson(json)).toList();
         setState(() {
           allcoins = coins;
@@ -36,6 +37,19 @@ class _Follow extends State<Follow> {
       print("Error loading coins: $e");
       setState(() => isLoading = false);
     }
+  }
+
+  void handlecategoryTap(int index) {
+    if (_debounce?.isActive ?? false) return _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {});
+    setState(() {
+      selectedIndex = index;
+      if (index == 0 || index == 3) {
+        filteredCoins = allcoins;
+      } else {
+        filteredCoins = [];
+      }
+    });
   }
 
   void _onSearch(String keyword) {
@@ -76,7 +90,10 @@ class _Follow extends State<Follow> {
           onChanged: _onSearch,
         ),
         const SizedBox(height: 10),
-        CategorySelector(),
+        CategorySelector(
+          selectedIndex: selectedIndex,
+          onCategoryTap: handlecategoryTap,
+        ),
         SizedBox(height: 5),
         Expanded(child: CoinList(coins: filteredCoins)),
       ],
